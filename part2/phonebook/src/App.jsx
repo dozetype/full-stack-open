@@ -1,25 +1,25 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from "react";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
-import axios from 'axios'
+import personsService from "./services/persons";
 
 const App = () => {
     const [persons, setPersons] = useState([]);
     const [newName, setNewName] = useState("");
     const [newNumber, setNewNumber] = useState("");
     const [filter, setFilter] = useState("");
-    
+
     useEffect(() => {
-        console.log('effect')
-        axios.get('http://localhost:3001/persons').then((response) => {
-          console.log('promise fulfilled')
-          setPersons(response.data)
-        })
-      }, [])
-      console.log('render', persons.length, 'notes')
+        //Rendering
+        personsService.getAll().then((response) => {
+            setPersons(response);
+        });
+    }, []);
+    console.log("render", persons.length, "notes");
 
     const addPerson = (event) => {
+        // adding
         event.preventDefault();
         if (persons.some((person) => person.name === newName)) {
             console.log("already exist");
@@ -28,9 +28,13 @@ const App = () => {
             const newPerson = {
                 name: newName,
                 number: newNumber,
-                id: persons.length + 1,
+                id: String(persons.length + 1),
             };
-            setPersons(persons.concat(newPerson));
+            personsService
+                .create(newPerson)
+                .then((returnedPersons) =>
+                    setPersons(persons.concat(returnedPersons)),
+                );
         }
         setNewName("");
         setNewNumber("");
@@ -55,6 +59,16 @@ const App = () => {
                   person.name.toLowerCase().includes(filter.toLowerCase()),
               );
 
+    const handleRemove = (id, name) => {
+        if (window.confirm(`Delete ${name}?`)) {
+            personsService.remove(id).then(() => {
+                setPersons((response) =>
+                    response.filter((person) => person.id !== id),
+                );
+            });
+        }
+    };
+
     return (
         <div>
             <h2>Phonebook</h2>
@@ -69,7 +83,7 @@ const App = () => {
                 newNumber={newNumber}
             />
             <h2>Numbers</h2>
-            <Persons peopleToShow={peopleToShow} />
+            <Persons peopleToShow={peopleToShow} handleRemove={handleRemove} />
         </div>
     );
 };
