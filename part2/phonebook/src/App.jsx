@@ -12,18 +12,31 @@ const App = () => {
 
     useEffect(() => {
         //Rendering
-        personsService.getAll().then((response) => {
-            setPersons(response);
+        personsService.getAll().then((res) => {
+            setPersons(res);
         });
     }, []);
     console.log("render", persons.length, "notes");
 
     const addPerson = (event) => {
-        // adding
         event.preventDefault();
-        if (persons.some((person) => person.name === newName)) {
-            console.log("already exist");
-            alert(`${newName} is already added to phonebook`);
+
+        const existPerson = persons.find((p) => p.name === newName);
+        if (existPerson) {
+            if (
+                window.confirm(
+                    `${newName} is already added to phonebook, replace the old number with a new one?`,
+                )
+            ) {
+                const updatedPerson = { ...existPerson, number: newNumber };
+                personsService
+                    .update(existPerson.id, updatedPerson)
+                    .then((res) =>
+                        setPersons(
+                            persons.map((p) => (p.id === res.id ? res : p)),
+                        ),
+                    );
+            }
         } else {
             const newPerson = {
                 name: newName,
@@ -36,6 +49,7 @@ const App = () => {
                     setPersons(persons.concat(returnedPersons)),
                 );
         }
+
         setNewName("");
         setNewNumber("");
     };
@@ -60,13 +74,12 @@ const App = () => {
               );
 
     const handleRemove = (id, name) => {
-        if (window.confirm(`Delete ${name}?`)) {
-            personsService.remove(id).then(() => {
-                setPersons((response) =>
-                    response.filter((person) => person.id !== id),
+        if (window.confirm(`Delete ${name}?`))
+            personsService
+                .remove(id)
+                .then((res) =>
+                    setPersons(persons.filter((p) => p.id !== res.id)),
                 );
-            });
-        }
     };
 
     return (
