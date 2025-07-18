@@ -9,6 +9,7 @@ const app = express();
 //     console.log("---");
 //     next();
 // };
+app.use(express.static('dist')) //Allow Express to run frontend code, allowing backend to serve full stack
 app.use(express.json());
 app.use(morgan('tiny'))
 // app.use(requestLogger);
@@ -64,7 +65,7 @@ const unknownEndpoint = (request, response) => {
 
 app.use(unknownEndpoint)
 
-const PORT = 3001;
+const PORT = process.env.PORT || 3001 //check if environment PORT exists
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-});
+  console.log(`Server running on port ${PORT}`)
+})
