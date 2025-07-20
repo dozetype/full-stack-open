@@ -44,10 +44,12 @@ const App = () => {
                     })
                     .catch((err) => {
                         setErrorMessage(
-                            `Information of ${newName} has already been removed form server`,
+                            `Information of ${newName} has already been removed form server. Or ${err.response.data.error}`,
                         );
                         setTimeout(() => setErrorMessage(null), 3000);
-                        setPersons(persons.filter((p) => p.id !== existPerson.id)) // refresh
+                        // setPersons(
+                        //     persons.filter((p) => p.id !== existPerson.id),
+                        // ); // refresh
                     });
             }
         } else {
@@ -60,7 +62,10 @@ const App = () => {
                 setPersons(persons.concat(returnedPersons));
                 setSuccessMessage(`Added ${newName}`);
                 setTimeout(() => setSuccessMessage(null), 3000);
-            });
+            }).catch(err => {
+                setErrorMessage(err.response.data.error);
+                setTimeout(() => setErrorMessage(null), 3000);
+            })
         }
 
         setNewName("");
