@@ -104,20 +104,34 @@ describe("BACKEND TESTS", () => {
             .get("/api/blogs")
             .expect(200)
             .expect("Content-Type", /application\/json/);
-        const savedBlog = res.body.find((b) => b.title === "No likes initialized");
-        assert.strictEqual(savedBlog.likes, 0)
+        const savedBlog = res.body.find(
+            (b) => b.title === "No likes initialized",
+        );
+        assert.strictEqual(savedBlog.likes, 0);
     });
-    
+
     test("POST without required are not added", async () => {
-        const blogsAtStart = await blogsInDb()
+        const blogsAtStart = await blogsInDb();
         const newBlog = {
             title: "No URL",
             author: "xw2",
         };
-        await api.post("/api/blogs").send(newBlog).expect(400)
-        const blogsAtEnd = await blogsInDb()
-        assert.strictEqual(blogsAtStart.length, blogsAtEnd.length)
-    })
+        await api.post("/api/blogs").send(newBlog).expect(400);
+        const blogsAtEnd = await blogsInDb();
+        assert.strictEqual(blogsAtStart.length, blogsAtEnd.length);
+    });
+
+    test("Updating Likes", async () => {
+        const blogs = await blogsInDb();
+        const firstBlog = blogs[0];
+        const updatedLikes = { likes: firstBlog.likes + 1 };
+        const res = await api
+            .put(`/api/blogs/${firstBlog.id}`)
+            .send(updatedLikes)
+            .expect(200)
+            .expect("Content-Type", /application\/json/);
+        assert.strictEqual(firstBlog.likes+1, res.body.likes);
+    });
 });
 
 after(async () => {
