@@ -1,13 +1,14 @@
-require('express-async-errors') // Helps to eliminate all try catch blocks
+require("express-async-errors"); // Helps to eliminate all try catch blocks
 const express = require("express");
 const mongoose = require("mongoose");
-const {MONGODB_URI, PORT} = require("./utils/config")
-const logger = require('./utils/logger')
-const blogsRouter = require('./controllers/blogs')
-const middleware = require('./utils/middleware')
+const { MONGODB_URI, PORT } = require("./utils/config");
+const logger = require("./utils/logger");
+const blogsRouter = require("./controllers/blogs");
+const usersRouter = require("./controllers/users");
+const middleware = require("./utils/middleware");
 
 const app = express();
-app.use(express.json())
+app.use(express.json());
 
 // logger.info("connecting to", MONGODB_URI)
 mongoose
@@ -20,11 +21,12 @@ mongoose
     });
 
 // app.use(express.static('dist'))
-app.use(middleware.requestLogger)
+app.use(middleware.requestLogger);
 
-app.use('/api/blogs', blogsRouter)
+app.use("/api/blogs", blogsRouter);
+app.use("/api/users", usersRouter);
 
-app.use(middleware.unknownEndpoint)
-app.use(middleware.errorHandler)
+app.use(middleware.unknownEndpoint);
+app.use(middleware.errorHandler);
 
-module.exports = app
+module.exports = app;

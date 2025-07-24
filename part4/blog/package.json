@@ -12,6 +12,7 @@
     "test": "cross-env NODE_ENV=test node --test"
   },
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "cross-env": "^7.0.3",
     "dotenv": "^17.2.0",
     "express": "^4.21.2",
