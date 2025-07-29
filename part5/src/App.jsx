@@ -24,14 +24,18 @@ const App = () => {
         try {
             const user = await loginService.login({ username, password });
             setUser(user);
-            console.log(user._id);
         } catch (exception) {
             setErrorMessage("Wrong Credentials");
             setTimeout(() => {
                 setErrorMessage(null);
             }, 5000);
         }
-        console.log(event.target);
+        setUsername("");
+        setPassword("");
+    };
+
+    const handleLogOut = () => {
+        setUser(null);
     };
 
     const loginForm = () => (
@@ -44,16 +48,29 @@ const App = () => {
         />
     );
 
-    const blogForm = () => (
-        <BlogForm/>
-    );
-    
+    const blogForm = () => <BlogForm user={user} />;
+
+    if (user === null) {
+        return (
+            <div>
+                <h2>Log in to application</h2>
+                <Notification message={errorMessage} good={false} />
+                <Notification message={successMessage} good={true} />
+                {loginForm()}
+            </div>
+        );
+    }
     return (
         <div>
+            <h2>blogs</h2>
+            <p>
+                {user.username} logged in{" "}
+                <button onClick={handleLogOut}>log out</button>
+            </p>
             <Notification message={errorMessage} good={false} />
             <Notification message={successMessage} good={true} />
-            {user ? blogForm() : loginForm()}
-            <h2>blogs</h2>
+
+            {blogForm()}
             {blogs.map((blog) => (
                 <Blog key={blog.id} blog={blog} />
             ))}
