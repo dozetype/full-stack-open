@@ -4,6 +4,7 @@ const BlogForm = ({ setSuccessMessage, setErrorMessage, blogs, setBlogs}) => {
     const [title, setTitle] = useState("");
     const [author, setAuthor] = useState("");
     const [url, setURL] = useState("");
+    
     const addBlog = async (event) => {
         event.preventDefault();
         const blogObj = {
@@ -25,6 +26,7 @@ const BlogForm = ({ setSuccessMessage, setErrorMessage, blogs, setBlogs}) => {
     };
     return (
         <>
+            <h2>Create new</h2>
             <form onSubmit={addBlog}>
                 <div>
                     Title:{" "}

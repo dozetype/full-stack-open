@@ -3,6 +3,7 @@ import Blog from "./components/Blog";
 import Notification from "./components/Notification";
 import LoginForm from "./components/LoginForm";
 import BlogForm from "./components/BlogForm";
+import Togglable from "./components/Toogglable";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
 
@@ -92,7 +93,9 @@ const App = () => {
             <Notification message={errorMessage} good={false} />
             <Notification message={successMessage} good={true} />
 
-            {blogForm()}
+            <Togglable viewLabel="new blog" hideLabel="cancel">
+                {blogForm()}
+            </Togglable>
             {blogs.map((blog) => (
                 <Blog key={blog.id} blog={blog} />
             ))}
