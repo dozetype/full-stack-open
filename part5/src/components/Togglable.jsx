@@ -1,6 +1,7 @@
 import { useState } from "react";
+import PropTypes from "prop-types";
 
-const Togglable = ({viewLabel, hideLabel, children}) => {
+const Togglable = ({ viewLabel, hideLabel, children }) => {
     const [visible, setVisible] = useState(false);
 
     const hideWhenVisible = { display: visible ? "none" : "" }; // button to expand
@@ -21,6 +22,13 @@ const Togglable = ({viewLabel, hideLabel, children}) => {
             </div>
         </div>
     );
+};
+
+Togglable.displayName = 'Togglable'
+
+Togglable.propTypes = {
+    viewLabel: PropTypes.string.isRequired,
+    hideLabel: PropTypes.string.isRequired,
 };
 
 export default Togglable;

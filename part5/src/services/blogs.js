@@ -31,17 +31,12 @@ const update = async (blogObj) => {
 };
 
 const remove = async (id) => {
-    try {
-        const config = {
-            headers: { Authorization: token },
-        };
-        const req = await axios.delete(`${baseUrl}/${id}`, config);
-        // console.log("deleted", id)
-        return req.data;
-    } catch (exception) {
-        // console.log(exception);
-        throw exception;
-    }
+    const config = {
+        headers: { Authorization: token },
+    };
+    const req = await axios.delete(`${baseUrl}/${id}`, config);
+    // console.log("deleted", id)
+    return req.data;
 };
 
 export default { getAll, create, setToken, update, remove };
