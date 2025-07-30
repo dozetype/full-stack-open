@@ -17,6 +17,7 @@ const create = async (blogObj) => {
         headers: { Authorization: token },
     };
     const req = await axios.post(baseUrl, blogObj, config);
+    // console.log(req)
     return req.data;
 };
 
@@ -24,13 +25,23 @@ const update = async (blogObj) => {
     const config = {
         headers: { Authorization: token },
     };
-    console.log(blogObj)
-    const req = await axios.put(
-        `${baseUrl}/${blogObj.id}`,
-        blogObj,
-        config,
-    );
+    // console.log(blogObj);
+    const req = await axios.put(`${baseUrl}/${blogObj.id}`, blogObj, config);
     return req.data;
 };
 
-export default { getAll, create, setToken, update };
+const remove = async (id) => {
+    try {
+        const config = {
+            headers: { Authorization: token },
+        };
+        const req = await axios.delete(`${baseUrl}/${id}`, config);
+        // console.log("deleted", id)
+        return req.data;
+    } catch (exception) {
+        // console.log(exception);
+        throw exception;
+    }
+};
+
+export default { getAll, create, setToken, update, remove };

@@ -14,16 +14,18 @@ const BlogForm = ({ setSuccessMessage, setErrorMessage, blogs, setBlogs}) => {
         };
         try {
             const res = await blogService.create(blogObj);
+            
+            setBlogs(blogs.concat(res))
             setSuccessMessage(
                 `a new blog ${res.title} by ${res.author} added`,
             );
             setTimeout(() => setSuccessMessage(null), 5000);
-            setBlogs(blogs.concat(res))
         } catch (exception) {
             setErrorMessage(`Didn't add`);
             setTimeout(() => setErrorMessage(null), 5000);
         }
     };
+    
     return (
         <>
             <h2>Create new</h2>

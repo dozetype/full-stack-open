@@ -22,9 +22,25 @@ const App = () => {
     useEffect(() => {
         const loggedUserJSON = window.localStorage.getItem("loggedBlogAppUser");
         if (loggedUserJSON) {
-            const user = JSON.parse(loggedUserJSON);
-            setUser(user);
-            blogService.setToken(user.token);
+            const init = async () => {
+                try {
+                    const user = JSON.parse(loggedUserJSON);
+                    blogService.setToken(user.token);
+                    const testObj = {
+                        title: "test",
+                        author: "test",
+                        url: "test",
+                    };
+                    const res = await blogService.create(testObj);
+                    setUser(user);
+                    await blogService.remove(res.id);
+                } catch (exception) {
+                    window.localStorage.removeItem("loggedBlogAppUser");
+                    setUser(null);
+                    blogService.setToken(null);
+                }
+            };
+            init();
         }
     }, []);
 
@@ -96,9 +112,18 @@ const App = () => {
             <Togglable viewLabel="new blog" hideLabel="cancel">
                 {blogForm()}
             </Togglable>
-            {blogs.map((blog) => (
-                <Blog key={blog.id} blog={blog} />
-            ))}
+            {blogs
+                .sort((a, b) => b.likes - a.likes)
+                .map((blog) => (
+                    <Blog
+                        key={blog.id}
+                        blog={blog}
+                        blogs={blogs}
+                        setBlogs={setBlogs}
+                        setErrorMessage={setErrorMessage}
+                        setSuccessMessage={setSuccessMessage}
+                    />
+                ))}
         </div>
     );
 };
