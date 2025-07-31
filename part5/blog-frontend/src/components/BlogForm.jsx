@@ -33,6 +33,7 @@ const BlogForm = ({ setSuccessMessage, setErrorMessage, blogs, setBlogs}) => {
                 <div>
                     <label htmlFor="title-input">Title:</label>{" "}
                     <input
+                        data-testid="Title"
                         id="title-input"
                         value={title}
                         name="Title"
@@ -42,6 +43,7 @@ const BlogForm = ({ setSuccessMessage, setErrorMessage, blogs, setBlogs}) => {
                 <div>
                     <label htmlFor="author-input">Author:</label>{" "}
                     <input
+                        data-testid="Author"
                         id="author-input"
                         value={author}
                         name="Author"
@@ -51,6 +53,7 @@ const BlogForm = ({ setSuccessMessage, setErrorMessage, blogs, setBlogs}) => {
                 <div>
                     <label htmlFor="url-input">URL:</label>{" "}
                     <input
+                        data-testid="URL"
                         id="url-input"
                         value={url}
                         name="URL"

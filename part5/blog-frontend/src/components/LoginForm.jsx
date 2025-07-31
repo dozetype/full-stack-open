@@ -13,6 +13,7 @@ const LoginForm = ({
                 <div>
                     username:{" "}
                     <input
+                        data-testid='username' //must be data-testid for playwright
                         value={username}
                         name="Username"
                         onChange={({ target }) => setUsername(target.value)}
@@ -21,6 +22,7 @@ const LoginForm = ({
                 <div>
                     password:{" "}
                     <input
+                        data-testid='password'
                         type="password"
                         value={password}
                         name="Password"
