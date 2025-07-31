@@ -31,24 +31,27 @@ const BlogForm = ({ setSuccessMessage, setErrorMessage, blogs, setBlogs}) => {
             <h2>Create new</h2>
             <form onSubmit={addBlog}>
                 <div>
-                    Title:{" "}
+                    <label htmlFor="title-input">Title:</label>{" "}
                     <input
+                        id="title-input"
                         value={title}
                         name="Title"
                         onChange={({ target }) => setTitle(target.value)}
                     ></input>
                 </div>
                 <div>
-                    Author:{" "}
+                    <label htmlFor="author-input">Author:</label>{" "}
                     <input
+                        id="author-input"
                         value={author}
                         name="Author"
                         onChange={({ target }) => setAuthor(target.value)}
                     ></input>
                 </div>
                 <div>
-                    URL:{" "}
+                    <label htmlFor="url-input">URL:</label>{" "}
                     <input
+                        id="url-input"
                         value={url}
                         name="URL"
                         onChange={({ target }) => setURL(target.value)}

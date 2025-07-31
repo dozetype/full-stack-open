@@ -1,14 +1,24 @@
 import { useState } from "react";
 import blogService from "../services/blogs";
 
-const Blog = ({ blog , blogs, setBlogs, setErrorMessage, setSuccessMessage}) => {
+const Blog = ({
+    blog,
+    blogs,
+    setBlogs,
+    setErrorMessage,
+    setSuccessMessage,
+    onLike,
+}) => {
     const [hidden, setHidden] = useState(true);
     const [likes, setLikes] = useState(blog.likes);
 
-    const updateLikes = async (newLikes) => {
+    const updateLikes = async () => {
+        const newLikes = likes + 1;
+        setLikes(newLikes);
         const newBlog = { ...blog, likes: newLikes };
         try {
             await blogService.update(newBlog);
+            if (onLike) onLike(newBlog);
         } catch (exception) {
             console.log(exception);
         }
@@ -16,14 +26,12 @@ const Blog = ({ blog , blogs, setBlogs, setErrorMessage, setSuccessMessage}) => 
 
     const handleRemove = async () => {
         if (window.confirm(`Remove blog ${blog.title} by ${blog.author}?`)) {
-            try{
+            try {
                 await blogService.remove(blog.id);
-                setBlogs(blogs.filter((b) => b.id !== blog.id))
-                setSuccessMessage(
-                    `${blog.title} by ${blog.author} deleted`,
-                );
+                setBlogs(blogs.filter((b) => b.id !== blog.id));
+                setSuccessMessage(`${blog.title} by ${blog.author} deleted`);
                 setTimeout(() => setSuccessMessage(null), 5000);
-            } catch(exception){
+            } catch (exception) {
                 setErrorMessage(`Didn't delete`);
                 setTimeout(() => setErrorMessage(null), 5000);
             }
@@ -46,9 +54,7 @@ const Blog = ({ blog , blogs, setBlogs, setErrorMessage, setSuccessMessage}) => 
                 likes {likes}{" "}
                 <button
                     onClick={() => {
-                        const newLikes = likes + 1;
-                        setLikes(newLikes);
-                        updateLikes(newLikes);
+                        updateLikes();
                     }}
                 >
                     like
