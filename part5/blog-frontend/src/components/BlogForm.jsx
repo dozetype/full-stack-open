@@ -20,6 +20,9 @@ const BlogForm = ({ setSuccessMessage, setErrorMessage, blogs, setBlogs}) => {
                 `a new blog ${res.title} by ${res.author} added`,
             );
             setTimeout(() => setSuccessMessage(null), 5000);
+            setTitle('');
+            setAuthor('');
+            setURL('');
         } catch (exception) {
             setErrorMessage(`Didn't add`);
             setTimeout(() => setErrorMessage(null), 5000);
