@@ -11,7 +11,7 @@ const Togglable = forwardRef(({ viewLabel, hideLabel, children }, ref) => {
         setVisible(!visible);
     };
     
-    useImperativeHandle(ref, () => ({
+    useImperativeHandle(ref, () => ({ // Used to only allow parent Use toggleVisibility
         toggleVisibility,
     }));
 
