@@ -1,6 +1,6 @@
 import { useState } from "react";
 import blogService from "../services/blogs";
-const BlogForm = ({ setSuccessMessage, setErrorMessage, blogs, setBlogs}) => {
+const BlogForm = ({ setSuccessMessage, setErrorMessage, blogs, setBlogs, togglableRef}) => {
     const [title, setTitle] = useState("");
     const [author, setAuthor] = useState("");
     const [url, setURL] = useState("");
@@ -23,6 +23,7 @@ const BlogForm = ({ setSuccessMessage, setErrorMessage, blogs, setBlogs}) => {
             setTitle('');
             setAuthor('');
             setURL('');
+            togglableRef.current.toggleVisibility();
         } catch (exception) {
             setErrorMessage(`Didn't add`);
             setTimeout(() => setErrorMessage(null), 5000);

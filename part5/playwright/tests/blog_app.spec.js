@@ -58,13 +58,7 @@ describe("Blog App", () => {
         describe("and a blog exists", () => {
             // New Describe will run all beforeEachs
             beforeEach(async ({ page }) => {
-                await page.getByRole("button", { name: "new blog" }).click();
-                await page.getByTestId("Title").fill("Another playwright test");
-                await page
-                    .getByTestId("Author")
-                    .fill("ANother playwright test2");
-                await page.getByTestId("URL").fill("Another playwright test3");
-                await page.getByRole("button", { name: "create" }).click();
+                await createBlog(page, 'Another playwright title', 'Another playwright author', 'Another playwright url')
             });
 
             test("importance can be changed", async ({ page }) => {
@@ -72,5 +66,19 @@ describe("Blog App", () => {
                 await expect(page.getByText("likes")).toBeVisible();
             });
         });
+        
+        describe("and several blogs exists", ()=>{
+            beforeEach(async ({page}) => {
+                await createBlog(page, 'blog 1', 'author 1', 'url1.com');
+                await createBlog(page, 'blog 2', 'author 2', 'url2.com');
+            })
+            test("one can be deleted", async () => {
+                
+                // await page.getByRole("button", { name: "view" }).click();
+                // await page.getByRole("button", { name: "remove" }).click();
+                // const blogs = await page.locator('.blogCSS').count();
+                // expect(blogs).toBe(1);
+            })
+        })
     });
 });

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Blog from "./components/Blog";
 import Notification from "./components/Notification";
 import LoginForm from "./components/LoginForm";
@@ -14,6 +14,8 @@ const App = () => {
     const [errorMessage, setErrorMessage] = useState(null);
     const [successMessage, setSuccessMessage] = useState(null);
     const [user, setUser] = useState(null);
+
+    const togglableRef = useRef();
 
     useEffect(() => {
         blogService.getAll().then((blogs) => setBlogs(blogs));
@@ -86,6 +88,7 @@ const App = () => {
             setSuccessMessage={setSuccessMessage}
             blogs={blogs}
             setBlogs={setBlogs}
+            togglableRef={togglableRef}
         />
     );
 
@@ -109,7 +112,11 @@ const App = () => {
             <Notification message={errorMessage} good={false} />
             <Notification message={successMessage} good={true} />
 
-            <Togglable viewLabel="new blog" hideLabel="cancel">
+            <Togglable
+                viewLabel="new blog"
+                hideLabel="cancel"
+                ref={togglableRef}
+            >
                 {blogForm()}
             </Togglable>
             {blogs
